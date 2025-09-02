@@ -11,9 +11,11 @@ import pagoRoutes from "./pagoRoutes.js";
 import opinionRoutes from "./opinionRoutes.js";
 import detalleOrdenRoutes from "./detalleOrdenRoutes.js";
 import itemCarritoRoutes from "./itemCarritoRoutes.js";
+import authRoutes from "./authRoutes.js";
 
 const router = express.Router();
 
+router.use("/auth", authRoutes);
 router.use("/usuarios", usuarioRoutes);
 router.use("/productos", productoRoutes);
 router.use("/carrito", carritoRoutes);
