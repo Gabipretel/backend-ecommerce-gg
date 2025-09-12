@@ -3,15 +3,89 @@ import { Producto, Categoria, Marca, Administrador, Opinion, Usuario } from "../
 
 export const getProductos = async (req, res) => {
   try {
-    const productos = await Producto.findAll({
+    const { 
+      nombre, 
+      activo, 
+      destacado,
+      id_categoria,
+      id_marca,
+      orderBy = 'createdAt', 
+      orderDirection = 'DESC',
+      limit,
+      offset 
+    } = req.query;
+
+    // Construye condiciones de filtrado
+    const whereConditions = {};
+    
+    if (nombre) {
+      whereConditions.nombre = {
+        [Producto.sequelize.Sequelize.Op.like]: `%${nombre}%`
+      };
+    }
+    
+    if (activo !== undefined) {
+      whereConditions.activo = activo === 'true';
+    }
+
+    if (destacado !== undefined) {
+      whereConditions.destacado = destacado === 'true';
+    }
+
+    if (id_categoria) {
+      whereConditions.id_categoria = parseInt(id_categoria);
+    }
+
+    if (id_marca) {
+      whereConditions.id_marca = parseInt(id_marca);
+    }
+
+    // Valida orderBy (ordenamiento)
+    const validOrderFields = ['nombre', 'precio', 'stock', 'createdAt', 'updatedAt', 'activo', 'destacado'];
+    const orderField = validOrderFields.includes(orderBy) ? orderBy : 'createdAt';
+    
+    // Valida orderDirection (dirección del ordenamiento)
+    const direction = orderDirection.toUpperCase() === 'ASC' ? 'ASC' : 'DESC';
+
+    // Configura opciones de consulta
+    const queryOptions = {
+      where: whereConditions,
       include: [
         { model: Categoria, as: 'categoria' },
         { model: Marca, as: 'marca' },
-      ]
-    });
+      ],
+      order: [[orderField, direction]]
+    };
+
+    // Agrega paginación si se proporciona
+    if (limit) {
+      queryOptions.limit = parseInt(limit);
+      if (offset) {
+        queryOptions.offset = parseInt(offset);
+      }
+    }
+
+    const productos = await Producto.findAll(queryOptions);
+    
+    // Obtiene conteo total para paginación
+    const totalCount = await Producto.count({ where: whereConditions });
 
     res.status(200).json({
-      data: productos
+      data: productos,
+      pagination: {
+        total: totalCount,
+        limit: limit ? parseInt(limit) : null,
+        offset: offset ? parseInt(offset) : null
+      },
+      filters: {
+        nombre,
+        activo,
+        destacado,
+        id_categoria,
+        id_marca,
+        orderBy: orderField,
+        orderDirection: direction
+      }
     });
   } catch (error) {
     res.status(500).json({

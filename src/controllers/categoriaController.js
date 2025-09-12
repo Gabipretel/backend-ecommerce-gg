@@ -2,17 +2,79 @@ import { Categoria, Administrador, Producto } from "../models/index.js";
 
 export const getCategorias = async (req, res) => {
   try {
+    const { 
+      nombre, 
+      activo, 
+      orderBy = 'nombre', 
+      orderDirection = 'ASC',
+      limit,
+      offset 
+    } = req.query;
 
-    const categorias = await Categoria.findAll({
-      order: [['nombre', 'ASC']]
-    });
+    // Construye condiciones de filtrado
+    const whereConditions = {};
+    
+    if (nombre) {
+      whereConditions.nombre = {
+        [Categoria.sequelize.Sequelize.Op.like]: `%${nombre}%`
+      };
+    }
+    
+    if (activo !== undefined) {
+      whereConditions.activo = activo === 'true';
+    }
+
+    // Valida orderBy (sin timestamps disponibles)
+    const validOrderFields = ['id', 'nombre', 'activo'];
+    const orderField = validOrderFields.includes(orderBy) ? orderBy : 'nombre';
+    
+    // Valida orderDirection (dirección del ordenamiento)
+    const direction = orderDirection.toUpperCase() === 'ASC' ? 'ASC' : 'DESC';
+
+    // Configura opciones de consulta
+    const queryOptions = {
+      where: whereConditions,
+      order: [[orderField, direction]]
+    };
+
+    // Agrega paginación si se proporciona
+    if (limit) {
+      queryOptions.limit = parseInt(limit);
+      if (offset) {
+        queryOptions.offset = parseInt(offset);
+      }
+    }
+
+    const categorias = await Categoria.findAll(queryOptions);
+    
+    // Obtiene conteo total para paginación
+    const totalCount = await Categoria.count({ where: whereConditions });
+
     if(categorias.length === 0){
       return res.status(404).json({
-        message: 'No hay categorias cargadas'
+        message: 'No hay categorías que coincidan con los filtros aplicados',
+        filters: {
+          nombre,
+          activo,
+          orderBy: orderField,
+          orderDirection: direction
+        }
       });
     }
+
     res.status(200).json({
-      data: categorias
+      data: categorias,
+      pagination: {
+        total: totalCount,
+        limit: limit ? parseInt(limit) : null,
+        offset: offset ? parseInt(offset) : null
+      },
+      filters: {
+        nombre,
+        activo,
+        orderBy: orderField,
+        orderDirection: direction
+      }
     });
   } catch (error) {
     res.status(500).json({

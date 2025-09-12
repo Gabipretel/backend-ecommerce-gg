@@ -3,11 +3,76 @@ import { Usuario, Direccion, Carrito, Orden } from "../models/index.js";
 
 export const getUsuarios = async (req, res) => {
   try {
-    const usuarios = await Usuario.findAll({
+    const { 
+      nombre, 
+      apellido, 
+      activo, 
+      orderBy = 'createdAt', 
+      orderDirection = 'DESC',
+      limit,
+      offset 
+    } = req.query;
+
+    // Construye condiciones de filtrado
+    const whereConditions = {};
+    
+    if (nombre) {
+      whereConditions.nombre = {
+        [Usuario.sequelize.Sequelize.Op.like]: `%${nombre}%`
+      };
+    }
+    
+    if (apellido) {
+      whereConditions.apellido = {
+        [Usuario.sequelize.Sequelize.Op.like]: `%${apellido}%`
+      };
+    }
+    
+    if (activo !== undefined) {
+      whereConditions.activo = activo === 'true';
+    }
+
+    // Valida orderBy (ordenamiento)
+    const validOrderFields = ['nombre', 'apellido', 'fecha_registro', 'createdAt', 'updatedAt', 'activo'];
+    const orderField = validOrderFields.includes(orderBy) ? orderBy : 'createdAt';
+    
+    // Valida orderDirection (dirección del ordenamiento)
+    const direction = orderDirection.toUpperCase() === 'ASC' ? 'ASC' : 'DESC';
+
+    // Configura opciones de consulta
+    const queryOptions = {
+      where: whereConditions,
       attributes: { exclude: ['password'] },
-    });
+      order: [[orderField, direction]]
+    };
+
+    // Agrega paginación si se proporciona
+    if (limit) {
+      queryOptions.limit = parseInt(limit);
+      if (offset) {
+        queryOptions.offset = parseInt(offset);
+      }
+    }
+
+    const usuarios = await Usuario.findAll(queryOptions);
+    
+    // Obtiene conteo total para paginación
+    const totalCount = await Usuario.count({ where: whereConditions });
+
     res.status(200).json({
-      data: usuarios
+      data: usuarios,
+      pagination: {
+        total: totalCount,
+        limit: limit ? parseInt(limit) : null,
+        offset: offset ? parseInt(offset) : null
+      },
+      filters: {
+        nombre,
+        apellido,
+        activo,
+        orderBy: orderField,
+        orderDirection: direction
+      }
     });
   } catch (error) {
     res.status(500).json({
