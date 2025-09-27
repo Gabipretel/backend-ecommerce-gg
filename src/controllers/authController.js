@@ -10,18 +10,38 @@ export const registerUser = async (req, res, next) => {
   try {
     const { nombre, apellido, email, password, telefono } = req.body;
 
-
+    // Valida los campos obligatorios
     if (!nombre || !apellido || !email || !password) {
-      const error = new Error('Todos los campos son requeridos');
-      error.statusCode = 400;
-      throw error;
+      return res.status(400).json({
+        success: false,
+        message: 'Todos los campos son requeridos',
+        errors: ['Nombre, apellido, email y contraseña son obligatorios']
+      });
     }
 
+    // Valida el formato de email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({
+        success: false,
+        message: 'El formato del email no es válido',
+        errors: ['Ingresa un email válido']
+      });
+    }
+
+    // Verifica si el email ya existe
+    const existingUser = await Usuario.findOne({ where: { email } });
+    if (existingUser) {
+      return res.status(409).json({
+        success: false,
+        message: 'Ya existe un usuario con este email',
+        errors: ['El email ya está registrado en el sistema']
+      });
+    }
+
+    // Valida contraseña
     const passwordValidation = validatePassword(password);
     if (!passwordValidation.isValid) {
-      const error = new Error('La contraseña no es válida');
-      error.statusCode = 400;
-      error.details = passwordValidation.errors;
       return res.status(400).json({
         success: false,
         message: 'La contraseña no es válida',
@@ -63,25 +83,44 @@ export const registerUser = async (req, res, next) => {
       }
     });
   } catch (error) {
+    // Maneja errores específicos de la base de datos
+    if (error.name === 'SequelizeUniqueConstraintError') {
+      return res.status(409).json({
+        success: false,
+        message: 'Ya existe un usuario con este email',
+        errors: ['El email ya está registrado en el sistema']
+      });
+    }
+    
+    if (error.name === 'SequelizeValidationError') {
+      const errors = error.errors.map(err => err.message);
+      return res.status(400).json({
+        success: false,
+        message: 'Error de validación',
+        errors: errors
+      });
+    }
+
+    // Para otros errores, usa el middleware de error general.
     next(error);
   }
 };
 
 /**
- * Registro de administrador (solo para superadmins)
+ * Registro de administrador
  */
 export const registerAdmin = async (req, res, next) => {
   try {
     const { nombre, apellido, email, password, rol = 'admin' } = req.body;
 
-    // Validar campos requeridos
+    // Valida los campos obligatorios
     if (!nombre || !apellido || !email || !password) {
       const error = new Error('Nombre, apellido, email y contraseña son requeridos');
       error.statusCode = 400;
       throw error;
     }
 
-    // Validar formato de email
+    // Valida el formato de email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       const error = new Error('El formato del email no es válido');
@@ -89,7 +128,7 @@ export const registerAdmin = async (req, res, next) => {
       throw error;
     }
 
-    // Validar que el rol sea válido
+    // Valida que el rol sea válido
     const rolesPermitidos = ['admin', 'superadmin'];
     if (!rolesPermitidos.includes(rol)) {
       const error = new Error('El rol debe ser "admin" o "superadmin"');
@@ -97,7 +136,7 @@ export const registerAdmin = async (req, res, next) => {
       throw error;
     }
 
-    // Validar que el email no esté en uso
+    // Valida que el email no esté en uso
     const existeAdmin = await Administrador.findOne({ where: { email } });
     if (existeAdmin) {
       const error = new Error('Ya existe un administrador con este email');
@@ -105,7 +144,7 @@ export const registerAdmin = async (req, res, next) => {
       throw error;
     }
 
-    // Validar contraseña
+    // Valida contraseña
     const passwordValidation = validatePassword(password);
     if (!passwordValidation.isValid) {
       const error = new Error('Contraseña no válida');
@@ -114,10 +153,10 @@ export const registerAdmin = async (req, res, next) => {
       throw error;
     }
 
-    // Hashear contraseña
+    // Hashea contraseña
     const hashedPassword = await hashPassword(password);
 
-    // Crear administrador
+    // Crea administrador
     const admin = await Administrador.create({
       nombre,
       apellido,
@@ -146,59 +185,57 @@ export const registerAdmin = async (req, res, next) => {
 };
 
 /**
- * Login unificado para usuarios y administradores
+ * Login específico para usuarios
  */
-export const login = async (req, res, next) => {
+export const loginUser = async (req, res, next) => {
   try {
-    const { email, password, type = 'user' } = req.body;
+    const { email, password } = req.body;
 
-    // Validar campos requeridos
+    // Valida los campos obligatorios
     if (!email || !password) {
-      const error = new Error('Email y contraseña son requeridos');
-      error.statusCode = 400;
-      throw error;
+      return res.status(400).json({
+        success: false,
+        message: 'Email y contraseña son requeridos',
+        errors: ['Ambos campos son obligatorios']
+      });
     }
 
-    let user = null;
-    let Model = null;
-
-    // Determinar el modelo según el tipo
-    if (type === 'admin') {
-      Model = Administrador;
-    } else {
-      Model = Usuario;
-    }
-
-    // Buscar usuario
-    user = await Model.findOne({ where: { email } });
+    // Busca usuario
+    const user = await Usuario.findOne({ where: { email } });
 
     if (!user) {
-      const error = new Error('Credenciales inválidas');
-      error.statusCode = 401;
-      throw error;
+      return res.status(401).json({
+        success: false,
+        message: 'Credenciales inválidas',
+        errors: ['El email o contraseña son incorrectos']
+      });
     }
 
-    // Verificar que el usuario esté activo
+    // Verifica que el usuario esté activo
     if (!user.activo) {
-      const error = new Error('Cuenta desactivada. Contacta al administrador');
-      error.statusCode = 401;
-      throw error;
+      return res.status(401).json({
+        success: false,
+        message: 'Cuenta desactivada. Contacta al administrador',
+        errors: ['Tu cuenta ha sido desactivada']
+      });
     }
 
-    // Comparar contraseñas
+    // Compara contraseñas
     const isPasswordValid = await comparePassword(password, user.password);
     if (!isPasswordValid) {
-      const error = new Error('Credenciales inválidas');
-      error.statusCode = 401;
-      throw error;
+      return res.status(401).json({
+        success: false,
+        message: 'Credenciales inválidas',
+        errors: ['El email o contraseña son incorrectos']
+      });
     }
 
-    // Generar tokens
+    // Genera tokens
     const userForToken = {
       id: user.id,
       email: user.email,
-      type: type,
-      rol: user.rol || null
+      type: 'user',
+      rol: null
     };
     const tokens = generateTokenPair(userForToken);
 
@@ -211,8 +248,8 @@ export const login = async (req, res, next) => {
           nombre: user.nombre,
           apellido: user.apellido,
           email: user.email,
-          tipo: type,
-          rol: user.rol || null,
+          tipo: 'user',
+          rol: null,
           telefono: user.telefono || null
         },
         ...tokens
@@ -224,6 +261,82 @@ export const login = async (req, res, next) => {
 };
 
 /**
+ * Login específico para administradores
+ */
+export const loginAdmin = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+
+    // Valida los campos obligatorios
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: 'Email y contraseña son requeridos',
+        errors: ['Ambos campos son obligatorios']
+      });
+    }
+
+    // Busca administrador
+    const admin = await Administrador.findOne({ where: { email } });
+
+    if (!admin) {
+      return res.status(401).json({
+        success: false,
+        message: 'Credenciales inválidas',
+        errors: ['El email o contraseña son incorrectos']
+      });
+    }
+
+    // Verifica que el administrador esté activo
+    if (!admin.activo) {
+      return res.status(401).json({
+        success: false,
+        message: 'Cuenta desactivada. Contacta al superadministrador',
+        errors: ['Tu cuenta de administrador ha sido desactivada']
+      });
+    }
+
+    // Compara contraseñas
+    const isPasswordValid = await comparePassword(password, admin.password);
+    if (!isPasswordValid) {
+      return res.status(401).json({
+        success: false,
+        message: 'Credenciales inválidas',
+        errors: ['El email o contraseña son incorrectos']
+      });
+    }
+
+    // Genera tokens
+    const adminForToken = {
+      id: admin.id,
+      email: admin.email,
+      type: 'admin',
+      rol: admin.rol
+    };
+    const tokens = generateTokenPair(adminForToken);
+
+    res.json({
+      success: true,
+      message: 'Inicio de sesión de administrador exitoso',
+      data: {
+        admin: {
+          id: admin.id,
+          nombre: admin.nombre,
+          apellido: admin.apellido,
+          email: admin.email,
+          tipo: 'admin',
+          rol: admin.rol
+        },
+        ...tokens
+      }
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+/**
  * Refresh token para obtener nuevo token de acceso
  */
 export const refreshToken = async (req, res, next) => {
@@ -231,9 +344,11 @@ export const refreshToken = async (req, res, next) => {
     const { refreshToken } = req.body;
 
     if (!refreshToken) {
-      const error = new Error('Refresh token requerido');
-      error.statusCode = 400;
-      throw error;
+      return res.status(400).json({
+        success: false,
+        message: 'Refresh token requerido',
+        errors: ['El refresh token es obligatorio']
+      });
     }
 
     // Verificar refresh token
@@ -248,9 +363,11 @@ export const refreshToken = async (req, res, next) => {
     }
 
     if (!user || !user.activo) {
-      const error = new Error('Usuario no encontrado o inactivo');
-      error.statusCode = 401;
-      throw error;
+      return res.status(401).json({
+        success: false,
+        message: 'Usuario no encontrado o inactivo',
+        errors: ['El usuario no existe o ha sido desactivado']
+      });
     }
 
     // Generar nuevo par de tokens
