@@ -16,7 +16,7 @@ router.post('/login-user', loginUser);
 router.post('/login-admin', loginAdmin);
 router.post('/refresh', refreshToken);
 
-// Rutas para administradores (requieren ser superadmin)
-router.post('/register-admin', verifyToken, requireSuperAdmin, registerAdmin);
+// Rutas para administradores
+router.post('/register-admin', registerAdmin);
 
 export default router;
