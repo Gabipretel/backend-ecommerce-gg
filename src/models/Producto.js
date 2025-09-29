@@ -60,7 +60,12 @@ const Producto = sequelize.define(
     },
     imagen_url: {
       type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    galeria_imagenes: {
+      type: DataTypes.JSON,
       allowNull: true,
+      defaultValue: [],
     },
     activo: {
       type: DataTypes.BOOLEAN,

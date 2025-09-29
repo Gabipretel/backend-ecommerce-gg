@@ -300,7 +300,12 @@ const crearProductos = async (categorias, marcas, administradorId) => {
       sku: "INT-I7-13700K",
       precio: 450.00,
       stock: 15,
-      imagen_url: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=500",
+      imagen_url: "https://res.cloudinary.com/demo/image/upload/v1234567890/intel-i7-13700k.jpg",
+      galeria_imagenes: [
+        "https://res.cloudinary.com/demo/image/upload/v1234567891/intel-i7-13700k-front.jpg",
+        "https://res.cloudinary.com/demo/image/upload/v1234567892/intel-i7-13700k-back.jpg",
+        "https://res.cloudinary.com/demo/image/upload/v1234567893/intel-i7-13700k-box.jpg"
+      ],
       activo: true,
       destacado: true
     },
@@ -313,7 +318,11 @@ const crearProductos = async (categorias, marcas, administradorId) => {
       sku: "INT-I5-13600K",
       precio: 320.00,
       stock: 25,
-      imagen_url: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=500",
+      imagen_url: "https://res.cloudinary.com/demo/image/upload/v1234567894/intel-i5-13600k.jpg",
+      galeria_imagenes: [
+        "https://res.cloudinary.com/demo/image/upload/v1234567895/intel-i5-13600k-front.jpg",
+        "https://res.cloudinary.com/demo/image/upload/v1234567896/intel-i5-13600k-back.jpg"
+      ],
       activo: true,
       destacado: false
     },
@@ -326,7 +335,12 @@ const crearProductos = async (categorias, marcas, administradorId) => {
       sku: "AMD-R7-7700X",
       precio: 380.00,
       stock: 20,
-      imagen_url: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=500",
+      imagen_url: "https://res.cloudinary.com/demo/image/upload/v1234567897/amd-ryzen-7-7700x.jpg",
+      galeria_imagenes: [
+        "https://res.cloudinary.com/demo/image/upload/v1234567898/amd-ryzen-7-7700x-front.jpg",
+        "https://res.cloudinary.com/demo/image/upload/v1234567899/amd-ryzen-7-7700x-back.jpg",
+        "https://res.cloudinary.com/demo/image/upload/v1234567900/amd-ryzen-7-7700x-box.jpg"
+      ],
       activo: true,
       destacado: true
     },
@@ -339,7 +353,11 @@ const crearProductos = async (categorias, marcas, administradorId) => {
       sku: "AMD-R5-7600X",
       precio: 280.00,
       stock: 30,
-      imagen_url: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=500",
+      imagen_url: "https://res.cloudinary.com/demo/image/upload/v1234567901/amd-ryzen-5-7600x.jpg",
+      galeria_imagenes: [
+        "https://res.cloudinary.com/demo/image/upload/v1234567902/amd-ryzen-5-7600x-front.jpg",
+        "https://res.cloudinary.com/demo/image/upload/v1234567903/amd-ryzen-5-7600x-back.jpg"
+      ],
       activo: true,
       destacado: false
     },
@@ -354,7 +372,13 @@ const crearProductos = async (categorias, marcas, administradorId) => {
       sku: "ASUS-RTX4080-ROG",
       precio: 1200.00,
       stock: 8,
-      imagen_url: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=500",
+      imagen_url: "https://res.cloudinary.com/demo/image/upload/v1234567904/asus-rtx-4080-rog.jpg",
+      galeria_imagenes: [
+        "https://res.cloudinary.com/demo/image/upload/v1234567905/asus-rtx-4080-rog-front.jpg",
+        "https://res.cloudinary.com/demo/image/upload/v1234567906/asus-rtx-4080-rog-back.jpg",
+        "https://res.cloudinary.com/demo/image/upload/v1234567907/asus-rtx-4080-rog-rgb.jpg",
+        "https://res.cloudinary.com/demo/image/upload/v1234567908/asus-rtx-4080-rog-box.jpg"
+      ],
       activo: true,
       destacado: true
     },
@@ -367,7 +391,12 @@ const crearProductos = async (categorias, marcas, administradorId) => {
       sku: "MSI-RTX4070-GXT",
       precio: 650.00,
       stock: 12,
-      imagen_url: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=500",
+      imagen_url: "https://res.cloudinary.com/demo/image/upload/v1234567909/msi-rtx-4070-gaming.jpg",
+      galeria_imagenes: [
+        "https://res.cloudinary.com/demo/image/upload/v1234567910/msi-rtx-4070-gaming-front.jpg",
+        "https://res.cloudinary.com/demo/image/upload/v1234567911/msi-rtx-4070-gaming-back.jpg",
+        "https://res.cloudinary.com/demo/image/upload/v1234567912/msi-rtx-4070-gaming-rgb.jpg"
+      ],
       activo: true,
       destacado: false
     },
@@ -380,7 +409,12 @@ const crearProductos = async (categorias, marcas, administradorId) => {
       sku: "GB-RX7800XT-GOC",
       precio: 550.00,
       stock: 10,
-      imagen_url: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=500",
+      imagen_url: "https://res.cloudinary.com/demo/image/upload/v1234567913/gigabyte-rx-7800-xt.jpg",
+      galeria_imagenes: [
+        "https://res.cloudinary.com/demo/image/upload/v1234567914/gigabyte-rx-7800-xt-front.jpg",
+        "https://res.cloudinary.com/demo/image/upload/v1234567915/gigabyte-rx-7800-xt-back.jpg",
+        "https://res.cloudinary.com/demo/image/upload/v1234567916/gigabyte-rx-7800-xt-rgb.jpg"
+      ],
       activo: true,
       destacado: true
     },
@@ -395,7 +429,12 @@ const crearProductos = async (categorias, marcas, administradorId) => {
       sku: "COR-VEN-RGB-32GB",
       precio: 180.00,
       stock: 20,
-      imagen_url: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=500",
+      imagen_url: "https://res.cloudinary.com/demo/image/upload/v1234567917/corsair-vengeance-rgb.jpg",
+      galeria_imagenes: [
+        "https://res.cloudinary.com/demo/image/upload/v1234567918/corsair-vengeance-rgb-front.jpg",
+        "https://res.cloudinary.com/demo/image/upload/v1234567919/corsair-vengeance-rgb-rgb.jpg",
+        "https://res.cloudinary.com/demo/image/upload/v1234567920/corsair-vengeance-rgb-box.jpg"
+      ],
       activo: true,
       destacado: true
     },
@@ -408,7 +447,11 @@ const crearProductos = async (categorias, marcas, administradorId) => {
       sku: "GSK-TZ5-16GB",
       precio: 120.00,
       stock: 25,
-      imagen_url: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=500",
+      imagen_url: "https://res.cloudinary.com/demo/image/upload/v1234567931/producto-default.jpg",
+      galeria_imagenes: [
+        "https://res.cloudinary.com/demo/image/upload/v1234567932/producto-default-front.jpg",
+        "https://res.cloudinary.com/demo/image/upload/v1234567933/producto-default-back.jpg"
+      ],
       activo: true,
       destacado: false
     },
@@ -421,7 +464,11 @@ const crearProductos = async (categorias, marcas, administradorId) => {
       sku: "KIN-FB-32GB",
       precio: 140.00,
       stock: 18,
-      imagen_url: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=500",
+      imagen_url: "https://res.cloudinary.com/demo/image/upload/v1234567931/producto-default.jpg",
+      galeria_imagenes: [
+        "https://res.cloudinary.com/demo/image/upload/v1234567932/producto-default-front.jpg",
+        "https://res.cloudinary.com/demo/image/upload/v1234567933/producto-default-back.jpg"
+      ],
       activo: true,
       destacado: false
     },
@@ -436,7 +483,11 @@ const crearProductos = async (categorias, marcas, administradorId) => {
       sku: "ASUS-Z790-ROG",
       precio: 350.00,
       stock: 12,
-      imagen_url: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=500",
+      imagen_url: "https://res.cloudinary.com/demo/image/upload/v1234567931/producto-default.jpg",
+      galeria_imagenes: [
+        "https://res.cloudinary.com/demo/image/upload/v1234567932/producto-default-front.jpg",
+        "https://res.cloudinary.com/demo/image/upload/v1234567933/producto-default-back.jpg"
+      ],
       activo: true,
       destacado: true
     },
@@ -449,7 +500,11 @@ const crearProductos = async (categorias, marcas, administradorId) => {
       sku: "MSI-B650-TOM",
       precio: 220.00,
       stock: 15,
-      imagen_url: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=500",
+      imagen_url: "https://res.cloudinary.com/demo/image/upload/v1234567931/producto-default.jpg",
+      galeria_imagenes: [
+        "https://res.cloudinary.com/demo/image/upload/v1234567932/producto-default-front.jpg",
+        "https://res.cloudinary.com/demo/image/upload/v1234567933/producto-default-back.jpg"
+      ],
       activo: true,
       destacado: false
     },
@@ -464,7 +519,11 @@ const crearProductos = async (categorias, marcas, administradorId) => {
       sku: "EVGA-SN-850G",
       precio: 150.00,
       stock: 20,
-      imagen_url: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=500",
+      imagen_url: "https://res.cloudinary.com/demo/image/upload/v1234567931/producto-default.jpg",
+      galeria_imagenes: [
+        "https://res.cloudinary.com/demo/image/upload/v1234567932/producto-default-front.jpg",
+        "https://res.cloudinary.com/demo/image/upload/v1234567933/producto-default-back.jpg"
+      ],
       activo: true,
       destacado: true
     },
@@ -477,7 +536,11 @@ const crearProductos = async (categorias, marcas, administradorId) => {
       sku: "SEA-FGX-750",
       precio: 120.00,
       stock: 18,
-      imagen_url: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=500",
+      imagen_url: "https://res.cloudinary.com/demo/image/upload/v1234567931/producto-default.jpg",
+      galeria_imagenes: [
+        "https://res.cloudinary.com/demo/image/upload/v1234567932/producto-default-front.jpg",
+        "https://res.cloudinary.com/demo/image/upload/v1234567933/producto-default-back.jpg"
+      ],
       activo: true,
       destacado: false
     },
@@ -490,7 +553,11 @@ const crearProductos = async (categorias, marcas, administradorId) => {
       sku: "COR-RM850X",
       precio: 160.00,
       stock: 15,
-      imagen_url: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=500",
+      imagen_url: "https://res.cloudinary.com/demo/image/upload/v1234567931/producto-default.jpg",
+      galeria_imagenes: [
+        "https://res.cloudinary.com/demo/image/upload/v1234567932/producto-default-front.jpg",
+        "https://res.cloudinary.com/demo/image/upload/v1234567933/producto-default-back.jpg"
+      ],
       activo: true,
       destacado: true
     },
@@ -505,7 +572,11 @@ const crearProductos = async (categorias, marcas, administradorId) => {
       sku: "NZXT-H7-FLOW",
       precio: 180.00,
       stock: 12,
-      imagen_url: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=500",
+      imagen_url: "https://res.cloudinary.com/demo/image/upload/v1234567931/producto-default.jpg",
+      galeria_imagenes: [
+        "https://res.cloudinary.com/demo/image/upload/v1234567932/producto-default-front.jpg",
+        "https://res.cloudinary.com/demo/image/upload/v1234567933/producto-default-back.jpg"
+      ],
       activo: true,
       destacado: true
     },
@@ -518,7 +589,11 @@ const crearProductos = async (categorias, marcas, administradorId) => {
       sku: "CM-TD500-MESH",
       precio: 120.00,
       stock: 15,
-      imagen_url: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=500",
+      imagen_url: "https://res.cloudinary.com/demo/image/upload/v1234567931/producto-default.jpg",
+      galeria_imagenes: [
+        "https://res.cloudinary.com/demo/image/upload/v1234567932/producto-default-front.jpg",
+        "https://res.cloudinary.com/demo/image/upload/v1234567933/producto-default-back.jpg"
+      ],
       activo: true,
       destacado: false
     },
@@ -533,7 +608,13 @@ const crearProductos = async (categorias, marcas, administradorId) => {
       sku: "SAM-G7-32-4K",
       precio: 800.00,
       stock: 8,
-      imagen_url: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=500",
+      imagen_url: "https://res.cloudinary.com/demo/image/upload/v1234567921/samsung-odyssey-g7.jpg",
+      galeria_imagenes: [
+        "https://res.cloudinary.com/demo/image/upload/v1234567922/samsung-odyssey-g7-front.jpg",
+        "https://res.cloudinary.com/demo/image/upload/v1234567923/samsung-odyssey-g7-back.jpg",
+        "https://res.cloudinary.com/demo/image/upload/v1234567924/samsung-odyssey-g7-gaming.jpg",
+        "https://res.cloudinary.com/demo/image/upload/v1234567925/samsung-odyssey-g7-box.jpg"
+      ],
       activo: true,
       destacado: true
     },
@@ -546,7 +627,11 @@ const crearProductos = async (categorias, marcas, administradorId) => {
       sku: "LG-UG-27-QHD",
       precio: 450.00,
       stock: 12,
-      imagen_url: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=500",
+      imagen_url: "https://res.cloudinary.com/demo/image/upload/v1234567931/producto-default.jpg",
+      galeria_imagenes: [
+        "https://res.cloudinary.com/demo/image/upload/v1234567932/producto-default-front.jpg",
+        "https://res.cloudinary.com/demo/image/upload/v1234567933/producto-default-back.jpg"
+      ],
       activo: true,
       destacado: false
     },
@@ -559,7 +644,11 @@ const crearProductos = async (categorias, marcas, administradorId) => {
       sku: "ACR-PRED-XB273K",
       precio: 600.00,
       stock: 10,
-      imagen_url: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=500",
+      imagen_url: "https://res.cloudinary.com/demo/image/upload/v1234567931/producto-default.jpg",
+      galeria_imagenes: [
+        "https://res.cloudinary.com/demo/image/upload/v1234567932/producto-default-front.jpg",
+        "https://res.cloudinary.com/demo/image/upload/v1234567933/producto-default-back.jpg"
+      ],
       activo: true,
       destacado: true
     },
@@ -574,7 +663,13 @@ const crearProductos = async (categorias, marcas, administradorId) => {
       sku: "DELL-ALW-M15R7",
       precio: 1800.00,
       stock: 5,
-      imagen_url: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=500",
+      imagen_url: "https://res.cloudinary.com/demo/image/upload/v1234567926/dell-alienware-m15.jpg",
+      galeria_imagenes: [
+        "https://res.cloudinary.com/demo/image/upload/v1234567927/dell-alienware-m15-front.jpg",
+        "https://res.cloudinary.com/demo/image/upload/v1234567928/dell-alienware-m15-back.jpg",
+        "https://res.cloudinary.com/demo/image/upload/v1234567929/dell-alienware-m15-keyboard.jpg",
+        "https://res.cloudinary.com/demo/image/upload/v1234567930/dell-alienware-m15-gaming.jpg"
+      ],
       activo: true,
       destacado: true
     },
@@ -587,7 +682,11 @@ const crearProductos = async (categorias, marcas, administradorId) => {
       sku: "ASUS-ROG-G15",
       precio: 1200.00,
       stock: 8,
-      imagen_url: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=500",
+      imagen_url: "https://res.cloudinary.com/demo/image/upload/v1234567931/producto-default.jpg",
+      galeria_imagenes: [
+        "https://res.cloudinary.com/demo/image/upload/v1234567932/producto-default-front.jpg",
+        "https://res.cloudinary.com/demo/image/upload/v1234567933/producto-default-back.jpg"
+      ],
       activo: true,
       destacado: false
     },
@@ -600,7 +699,11 @@ const crearProductos = async (categorias, marcas, administradorId) => {
       sku: "HP-OMEN-17",
       precio: 1400.00,
       stock: 6,
-      imagen_url: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=500",
+      imagen_url: "https://res.cloudinary.com/demo/image/upload/v1234567931/producto-default.jpg",
+      galeria_imagenes: [
+        "https://res.cloudinary.com/demo/image/upload/v1234567932/producto-default-front.jpg",
+        "https://res.cloudinary.com/demo/image/upload/v1234567933/producto-default-back.jpg"
+      ],
       activo: true,
       destacado: true
     }
