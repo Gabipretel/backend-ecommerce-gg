@@ -14,7 +14,7 @@ const cloudinaryUploadImage = async (fileToUpload) => {
       const data = await cloudinary.uploader.upload(fileToUpload, {
         resource_type: "auto",
         transformation: [
-          { width: 500, crop: "scale" },
+          { width: 1000, crop: "scale" },
           { quality: "auto" },
           { fetch_format: "auto" }
         ]
