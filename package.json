@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "db:reset": "node scripts/resetDatabase.js"
   },
   "keywords": [],
   "author": "",

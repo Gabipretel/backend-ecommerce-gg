@@ -58,14 +58,35 @@ const Producto = sequelize.define(
       allowNull: false,
       defaultValue: 0,
     },
-    imagen_url: {
-      type: DataTypes.TEXT,
+    imagen_principal: {
+      type: DataTypes.JSON,
       allowNull: false,
+      validate: {
+        isValidImageObject(value) {
+          if (!value || typeof value !== 'object') {
+            throw new Error('imagen_principal debe ser un objeto');
+          }
+          if (!value.url || !value.public_id) {
+            throw new Error('imagen_principal debe contener url y public_id');
+          }
+        }
+      }
     },
     galeria_imagenes: {
       type: DataTypes.JSON,
       allowNull: true,
       defaultValue: [],
+      validate: {
+        isValidGalleryArray(value) {
+          if (value && Array.isArray(value)) {
+            for (const image of value) {
+              if (!image.url || !image.public_id) {
+                throw new Error('Cada imagen de galería debe contener url y public_id');
+              }
+            }
+          }
+        }
+      }
     },
     activo: {
       type: DataTypes.BOOLEAN,

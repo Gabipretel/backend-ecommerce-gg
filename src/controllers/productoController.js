@@ -135,7 +135,7 @@ export const createProducto = async (req, res) => {
       sku, 
       precio, 
       stock, 
-      imagen_url, 
+      imagen_principal,
       galeria_imagenes,
       destacado 
     } = req.body;
@@ -149,7 +149,7 @@ export const createProducto = async (req, res) => {
       sku,
       precio,
       stock: stock || 0,
-      imagen_url,
+      imagen_principal,
       galeria_imagenes: galeria_imagenes || [],
       destacado: destacado || false
     });
@@ -178,7 +178,7 @@ export const updateProducto = async (req, res) => {
       sku, 
       precio, 
       stock, 
-      imagen_url, 
+      imagen_principal,
       galeria_imagenes,
       activo, 
       destacado 
@@ -199,11 +199,14 @@ export const updateProducto = async (req, res) => {
       sku: sku || producto.sku,
       precio: precio || producto.precio,
       stock: stock !== undefined ? stock : producto.stock,
-      imagen_url: imagen_url || producto.imagen_url,
+      imagen_principal: imagen_principal || producto.imagen_principal,
       galeria_imagenes: galeria_imagenes !== undefined ? galeria_imagenes : producto.galeria_imagenes,
       activo: activo !== undefined ? activo : producto.activo,
       destacado: destacado !== undefined ? destacado : producto.destacado
     });
+
+    // Recargar el producto para obtener los datos actualizados
+    await producto.reload();
 
     res.status(200).json({
       message: 'Producto actualizado exitosamente',
@@ -257,17 +260,19 @@ export const deleteProductoPermanente = async (req, res) => {
     // Eliminar imágenes de Cloudinary antes de eliminar el producto
     try {
       // Eliminar imagen principal si existe
-      if (producto.imagen_url) {
-        const publicId = producto.imagen_url.split('/').pop().split('.')[0];
-        await cloudinaryRemoveImage(publicId);
+      if (producto.imagen_principal && producto.imagen_principal.public_id) {
+        await cloudinaryRemoveImage(producto.imagen_principal.public_id);
       }
 
       // Eliminar imágenes de galería si existen
       if (producto.galeria_imagenes && producto.galeria_imagenes.length > 0) {
-        const publicIds = producto.galeria_imagenes.map(url => 
-          url.split('/').pop().split('.')[0]
-        );
-        await cloudinaryRemoveMultipleImage(publicIds);
+        const publicIds = producto.galeria_imagenes
+          .filter(img => img.public_id)
+          .map(img => img.public_id);
+        
+        if (publicIds.length > 0) {
+          await cloudinaryRemoveMultipleImage(publicIds);
+        }
       }
     } catch (cloudinaryError) {
       console.log('Error eliminando imágenes de Cloudinary:', cloudinaryError);
