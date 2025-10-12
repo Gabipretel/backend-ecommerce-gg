@@ -13,6 +13,7 @@ import detalleOrdenRoutes from "./detalleOrdenRoutes.js";
 import itemCarritoRoutes from "./itemCarritoRoutes.js";
 import authRoutes from "./authRoutes.js";
 import emailRoutes from "./emailRoutes.js";
+import chatbotRoutes from "./chatbotRoutes.js";
 const router = express.Router();
 
 router.use("/auth", authRoutes);
@@ -29,4 +30,5 @@ router.use("/opiniones", opinionRoutes);
 router.use("/detalle-ordenes", detalleOrdenRoutes);
 router.use("/items-carrito", itemCarritoRoutes);
 router.use("/email", emailRoutes);
+router.use("/chatbot", chatbotRoutes);
 export default router; 
