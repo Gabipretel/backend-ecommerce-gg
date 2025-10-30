@@ -13,6 +13,7 @@ import {
   Direccion,
   Opinion
 } from "../src/models/index.js";
+import { hashPassword } from "../src/utils/passwordUtils.js";
 
 // Script principal para resetear completamente la base de datos
 const resetDatabase = async () => {
@@ -76,11 +77,13 @@ const seedDatabase = async () => {
   try {
     // Crear administrador por defecto
     console.log('👤 Creando administrador por defecto...');
+    const adminPassword = 'Password1*?';
+    const hashedPassword = await hashPassword(adminPassword);
     const administrador = await Administrador.create({
       nombre: 'Admin',
       apellido: 'TechStore',
       email: 'admin@gmail.com',
-      password: '$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password: admin
+      password: hashedPassword,
       rol: 'superadmin',
       fecha_registro: new Date(),
       activo: true
@@ -2130,7 +2133,7 @@ const seedDatabase = async () => {
 
     console.log('🎉 ¡Base de datos poblada exitosamente!');
     console.log('📊 Resumen:');
-    console.log('   - 1 Administrador creado (admin@gmail.com / admin)');
+    console.log('   - 1 Administrador creado (admin@gmail.com / Password1*?)');
     console.log('   - 8 Categorías creadas (Procesadores, Placas de Video, Memorias RAM, Mothers, Fuentes, Gabinetes, Monitores, Notebooks)');
     console.log('   - 20 Marcas creadas');
     console.log('   - 141 Productos creados distribuidos en todas las categorías:');
